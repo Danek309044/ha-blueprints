@@ -1,0 +1,77 @@
+blueprint:
+  name: >
+    ZHA - TS004F single Zigbee Button
+  description: >
+    Use a TS004F single Zigbee button to run custom actions on short press, double press, and long press.
+  domain: automation
+  input:
+    button_device:
+      name: Zigbee Button
+      description: Select your zigbee button
+      selector:
+        device:
+          integration: zha
+          manufacturer: _TZ3000_ja5osu5g
+          model: TS004F
+
+    short_press_action:
+      name: Short press action
+      description: Action that runs, when you tap the button
+      default: []
+      selector:
+        action: {}
+
+    double_press_action:
+      name: Double press action
+      description: Action that runs, when you double tap the button
+      default: []
+      selector:
+        action: {}
+
+    long_press_action:
+      name: Hold action
+      description:  Action that runs, when you hold the button
+      default: []
+      selector:
+        action: {}
+
+trigger:
+  - platform: device
+    device_id: !input button_device
+    domain: zha
+    type: remote_button_short_press
+    subtype: button_1
+    id: short_press
+  - platform: device
+    device_id: !input button_device
+    domain: zha
+    type: remote_button_double_press
+    subtype: button_1
+    id: double_press
+  - platform: device
+    device_id: !input button_device
+    domain: zha
+    type: remote_button_long_press
+    subtype: button_1
+    id: long_press
+
+condition: []
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: short_press
+        sequence: !input short_press_action
+
+      - conditions:
+          - condition: trigger
+            id: double_press
+        sequence: !input double_press_action
+
+      - conditions:
+          - condition: trigger
+            id: long_press
+        sequence: !input long_press_action
+
+mode: single
