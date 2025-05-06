@@ -1,0 +1,102 @@
+blueprint:
+  name: >
+    SPOTIFY ONLY - Handoff Feature
+  description: >
+    Use the handoff feature that Homepods have with any device with casting capabilities using any phone! Spotify ONLY for now!
+  domain: automation
+  input:
+    tag_entity:
+      name: NFC Tag
+      description: Select the NFC tag that will trigger the handoff
+      selector:
+        entity:
+          domain: tag
+          
+    media_player:
+      name: Media player
+      description: Media player where the music will play
+      selector:
+        entity:
+          domain: media_player
+          integration: cast
+
+    spotify_media:
+      name: Spotify media source
+      description: The entity created by the Spotify integration
+      selector:
+        entity:
+          domain: media_player
+          integration: spotify
+
+    phone_name:
+      name: Phone name
+      description: Your phone name as it is seen in the Spotify app (e.g., Daniel's phone)
+      selector:
+        text:
+          multiline: false
+
+    spotcast_account:
+      name: Spotcast - Account
+      description: Optional - Starts Spotify using an alternative account specified in config.
+      selector:
+        text:
+          multiline: false
+      default: ""
+
+trigger:
+- platform: state
+  entity_id: !input tag_entity
+  
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: !input spotify_media
+                state: playing
+              - condition: state
+                entity_id: !input media_player
+                state: "off"
+        sequence:
+          - action: media_player.media_pause
+            metadata: {}
+            data: {}
+            target:
+              entity_id: !input spotify_media
+            enabled: true
+          - data:
+              limit: 20
+              force_playback: false
+              repeat: "off"
+              shuffle: false
+              offset: 0
+              start_position: 0
+              ignore_fully_played: false
+              random_song: false
+              entity_id: !input media_player
+              account: !input spotcast_account
+            action: spotcast.start
+      - conditions:
+          - condition: state
+            entity_id: !input media_player
+            state: playing
+        sequence:
+          - variables:
+              spotify_entity: !input spotify_media
+              playback_position: >
+                  {{ state_attr(spotify_entity, 'media_position') | default(0) }}
+          - data:
+              limit: 20
+              force_playback: false
+              random_song: false
+              repeat: "off"
+              shuffle: false
+              offset: 0
+              ignore_fully_played: false
+              device_name: !input phone_name
+              start_position: "{{ playback_position }}"
+              account: !input spotcast_account
+            action: spotcast.start
+mode: restart
