@@ -13,6 +13,7 @@ Blueprint for the TS004F signle Zigbee button
 ### spotify_cast_handoff.yaml
 Blueprint to make your own Handoff Homepod feature at home<br>
 In order to use this you need to have a Google Cast capable device and a Spotify account!
+- NFC Tag required for the best expirience, or you can use a QR code..
 - Needed integrations: [Cast](https://www.home-assistant.io/integrations/cast/), [Spotify](https://www.home-assistant.io/integrations/spotify/), [Spotcast](https://github.com/fondberg/spotcast)
 - Tested with: Nest Mini 2 x Samsung Galaxy S10
   
