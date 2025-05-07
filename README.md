@@ -10,6 +10,9 @@ Blueprint for the TS004F signle Zigbee button
   
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2FDanek309044%2Fha-blueprints%2Frefs%2Fheads%2Fmain%2Fzha_ts004f_button.yaml)
 
+<details>
+<summary>Broken Blueprints - for now</summary>
+  
 ### spotify_cast_handoff.yaml
 Blueprint to make your own Handoff Homepod feature at home<br>
 In order to use this you need to have a Google Cast capable device and a Spotify account!
@@ -23,3 +26,5 @@ In order to use this you need to have a Google Cast capable device and a Spotify
 Same thing as `spotify_cast_handoff.yaml`, just with support for multiple accounts
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2FDanek309044%2Fha-blueprints%2Frefs%2Fheads%2Fmain%2Fspotify_cast_handoff_account.yaml)
+
+</details>
