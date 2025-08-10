@@ -82,13 +82,3 @@ actions:
               media_player:
                 entity_id: !input spotcast_phone
               account: "{{ spotcast_id }}"
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 800
-          - action: media_player.media_pause
-            metadata: {}
-            data: {}
-            target:
-              entity_id: !input spotify_account
