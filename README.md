@@ -15,6 +15,7 @@ Blueprint for the spotify handoff feature
 - Integrations: Spotify, Spotcast v6, cast/any media integration for your Spotify connect speaker
 - Only works with one Spotify account and with one phone (beacuse of Home Assistant limitations for NFC tags on Android) as the reverse handoff
 - Recommended to use in your room/studio
+
 *Tested with Samsung Galaxy S10 and Google Nest Mini 2*
 
 [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2FDanek309044%2Fha-blueprints%2Frefs%2Fheads%2Fmain%2Fspotcast_handoff.yaml)
