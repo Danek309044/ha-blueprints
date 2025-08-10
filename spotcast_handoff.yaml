@@ -1,0 +1,94 @@
+blueprint:
+  name: >
+    SPOTIFY + SPOTCAST - Handoff Feature
+  description: >
+    Use the handoff feature that Homepods have with any device with casting capabilities using any phone!
+    Works only with Spotify and Spotcast + only for one phone and speaker.
+  domain: automation
+  input:
+    tag_entity:
+      name: NFC Tag
+      description: Select the NFC tag that will trigger the handoff
+      selector:
+        entity:
+          domain: tag
+          
+    spotify_account:
+      name: Spotify account
+      description: The account entity created by the Spotify integration
+      selector:
+        entity:
+          domain: media_player
+          integration: spotify
+
+    spotcast_profile:
+      name: Spotcast profile
+      description: The profile entity created by the Spotcast integration
+      selector:
+        entity:
+          domain: sensor
+          integration: spotcast
+
+    speaker:
+      name: Speaker
+      description: Speaker where will the playback transfer
+      selector:
+        entity:
+          domain: media_player
+
+    spotcast_phone:
+      name: Phone name
+      description: The phone that will be used in the reverse handoff feature
+      selector:
+        entity:
+          domain: media_player
+          integration: spotcast
+
+variables:
+  spotcast_user: !input spotcast_profile
+  spotcast_id: "{{ state_attr(spotcast_user, 'entry_id') }}"
+
+trigger:
+- platform: state
+  entity_id: !input tag_entity
+
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: !input spotify_account
+                state: playing
+              - condition: state
+                entity_id: !input speaker
+                state: "off"
+        sequence:
+          - action: spotcast.transfer_playback
+            metadata: {}
+            data:
+              account: "{{ spotcast_id }}"
+              media_player:
+                entity_id: !input speaker
+      - conditions:
+          - condition: state
+            entity_id: !input speaker
+            state: playing
+        sequence:
+          - action: spotcast.transfer_playback
+            metadata: {}
+            data:
+              media_player:
+                entity_id: !input spotcast_phone
+              account: "{{ spotcast_id }}"
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 800
+          - action: media_player.media_pause
+            metadata: {}
+            data: {}
+            target:
+              entity_id: !input spotify_account
