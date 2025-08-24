@@ -1,0 +1,74 @@
+blueprint:
+  name: >
+    Z2M - TS004F single Zigbee Button
+  description: >
+    Use a TS004F (ZG-101ZL in mqtt) single Zigbee button to run custom actions on short press, double press, and long press.
+  domain: automation
+  input:
+    button_device:
+      name: Zigbee Button
+      description: Select your zigbee button
+      selector:
+        device:
+          integration: mqtt
+          manufacturer: Loginovo
+
+    short_press_action:
+      name: Short press action
+      description: Action that runs, when you tap the button
+      default: []
+      selector:
+        action: {}
+
+    double_press_action:
+      name: Double press action
+      description: Action that runs, when you double tap the button
+      default: []
+      selector:
+        action: {}
+
+    long_press_action:
+      name: Hold action
+      description:  Action that runs, when you hold the button
+      default: []
+      selector:
+        action: {}
+
+triggers:
+  - domain: mqtt
+    device_id: !input button_device
+    type: action
+    subtype: single
+    trigger: device
+    id: single
+  - domain: mqtt
+    device_id: !input button_device
+    type: action
+    subtype: double
+    trigger: device
+    id: double
+  - domain: mqtt
+    device_id: !input button_device
+    type: action
+    subtype: hold
+    trigger: device
+    id: hold
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - single
+        sequence: !input short_press_action
+      - conditions:
+          - condition: trigger
+            id:
+              - double
+        sequence: !input double_press_action
+      - conditions:
+          - condition: trigger
+            id:
+              - hold
+        sequence: !input long_press_action
+mode: single
