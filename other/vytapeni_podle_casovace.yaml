@@ -1,0 +1,63 @@
+blueprint:
+  name: >
+    Vytápení - místnosti
+  description: >
+    Vytápení místnosti podle časového plánu
+  domain: automation
+  input:
+    thermostat:
+      name: Termostat
+      description: Vyber termostat/klimatizaci
+      selector:
+        entity:
+          filter:
+          - domain: climate
+
+    schedule:
+      name: Časový plán
+      description: Vyber nebo vytvoř časový plán, který je nastavený a v každém časovém období je údaj `t: (např. 28 nebo 25.5)` pro nastavení teploty
+      selector:
+        entity:
+          filter:
+          - domain: schedule
+
+triggers:
+  - trigger: state
+    entity_id:
+      - !input schedule
+    to: "on"
+    id: "on"
+  - trigger: state
+    entity_id:
+      - !input schedule
+    to: "off"
+    id: "off"
+conditions: []
+actions:
+  - variables:
+      schedule_entity: !input schedule
+      temp: "{{ state_attr(schedule_entity, 't') }}"
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: "on"
+        sequence:
+          - target:
+              entity_id: !input thermostat
+            data:
+              temperature: "{{ temp }}"
+            action: climate.set_temperature
+          - action: climate.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: !input thermostat
+      - conditions:
+          - condition: trigger
+            id: "off"
+        sequence:
+          - target:
+              entity_id: !input thermostat
+            action: climate.turn_off
+            data: {}
+mode: single

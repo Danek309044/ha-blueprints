@@ -3,7 +3,7 @@ My Home Assistant blueprints
 
 *If you need help or have any issues with the blueprints make a issue!*
 
-## zha_ts004f_button.yaml / z2M_ts004f_button.yaml
+## zha_ts004f_button.yaml / z2m_ts004f_button.yaml
 Blueprint for the TS004F signle Zigbee button
 - Model: TS004F (in both ZHA and Z2M), ZG-101ZL (in mqtt integration with Z2M)
 - Aliexpress: https://www.aliexpress.com/item/1005006762476931.html
