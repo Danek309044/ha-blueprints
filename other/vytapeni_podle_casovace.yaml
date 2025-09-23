@@ -15,7 +15,8 @@ blueprint:
 
     schedule:
       name: Časový plán
-      description: Vyber nebo vytvoř časový plán, který je nastavený a v každém časovém období je údaj `t: (např. 28 nebo 25.5)` pro nastavení teploty
+      description: >
+        Vyber nebo vytvoř časový plán, který je nastavený a v každém časovém období je údaj `t: (např. 25 nebo 22.5)` pro nastavení teploty
       selector:
         entity:
           filter:
